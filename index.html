@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>🍏 Frutech To-Do List</title>
   <style>
     :root {
@@ -32,13 +32,14 @@
     }
 
     * {
+      box-sizing: border-box;
       transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: var(--bg);
       color: var(--text);
     }
@@ -50,73 +51,106 @@
     }
 
     header h1 {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       margin: 0;
     }
 
     header p {
-      font-size: 1.2rem;
-      margin-top: 10px;
+      font-size: 1rem;
+      margin-top: 8px;
     }
 
     .theme-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
+      position: fixed;
+      top: 15px;
+      right: 15px;
       background-color: var(--btn);
       color: var(--text);
       border: none;
-      padding: 10px 15px;
-      border-radius: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
       cursor: pointer;
+      font-size: 1.1rem;
+      z-index: 1000;
+      user-select: none;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
     }
 
     .container {
       max-width: 600px;
-      margin: 40px auto;
+      margin: 40px auto 60px auto;
       background: var(--container);
       border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+      padding: 25px 20px 30px 20px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    /* Form wrapper to align input and button */
+    .input-wrapper {
+      display: flex;
+      gap: 12px;
+      width: 100%;
     }
 
     input[type="text"] {
-      width: 70%;
-      padding: 12px;
-      font-size: 1rem;
+      flex: 1;
+      padding: 14px 16px;
+      font-size: 1.1rem;
       border: 2px solid #ccc;
-      border-radius: 10px;
+      border-radius: 14px;
       background-color: var(--input-bg);
       color: var(--text);
+      outline-offset: 2px;
+      outline-color: var(--btn);
+      transition: border-color 0.25s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--btn);
     }
 
     button.add-btn {
-      padding: 12px 20px;
-      font-size: 1rem;
+      padding: 14px 20px;
+      font-size: 1.1rem;
       background-color: var(--btn);
       border: none;
-      border-radius: 10px;
+      border-radius: 14px;
       cursor: pointer;
-      margin-left: 10px;
       color: var(--text);
+      flex-shrink: 0;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+
+    button.add-btn:hover {
+      background-color: #7fcc7f;
     }
 
     ul {
       list-style: none;
       padding: 0;
-      margin-top: 20px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 400px;
+      overflow-y: auto;
     }
 
     li {
       background-color: var(--task-bg);
-      margin-bottom: 12px;
-      padding: 10px 15px;
+      padding: 12px 18px;
       font-size: 1.1rem;
       border-left: 8px solid var(--border);
-      border-radius: 10px;
+      border-radius: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      word-break: break-word;
     }
 
     li.completed span {
@@ -127,24 +161,77 @@
     li span {
       flex-grow: 1;
       cursor: pointer;
+      user-select: none;
     }
 
     .delete-btn {
       background-color: var(--delete);
       border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
+      padding: 8px 14px;
+      border-radius: 10px;
       cursor: pointer;
       font-weight: bold;
       color: white;
+      flex-shrink: 0;
+      user-select: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      transition: background-color 0.25s ease;
+    }
+
+    .delete-btn:hover {
+      background-color: #ff5a5a;
     }
 
     footer {
       text-align: center;
       margin-top: 50px;
-      padding: 20px;
+      padding: 20px 15px;
       background: var(--footer);
       font-size: 0.9rem;
+      user-select: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+
+      header p {
+        font-size: 0.9rem;
+      }
+
+      .theme-toggle {
+        padding: 8px 12px;
+        font-size: 1rem;
+        top: 12px;
+        right: 12px;
+      }
+
+      .container {
+        margin: 30px 15px 50px 15px;
+        padding: 20px 15px 25px 15px;
+      }
+
+      input[type="text"] {
+        padding: 12px 14px;
+        font-size: 1rem;
+      }
+
+      button.add-btn {
+        padding: 12px 16px;
+        font-size: 1rem;
+      }
+
+      li {
+        font-size: 1rem;
+        padding: 10px 14px;
+      }
+
+      .delete-btn {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
@@ -157,13 +244,15 @@
   </header>
 
   <div class="container">
-    <input type="text" id="taskInput" placeholder="Add a new task 🍊" />
-    <button class="add-btn" onclick="addTask()">➕ Add</button>
-    <ul id="taskList"></ul>
+    <div class="input-wrapper">
+      <input type="text" id="taskInput" placeholder="Add a new task 🍊" />
+      <button class="add-btn" onclick="addTask()">➕ Add</button>
+    </div>
+    <ul id="taskList" aria-live="polite"></ul>
   </div>
 
   <footer>
-    🍏 Created by Cengiz Kara and Other Developers. 🍉
+    🍏 Made with 🍒 by Cengiz Kara and Frutech Systems 🍉
   </footer>
 
   <script>
@@ -199,7 +288,7 @@
       if (completed) li.classList.add("completed");
       li.innerHTML = `
         <span onclick="toggleComplete(this)">${text}</span>
-        <button class="delete-btn" onclick="deleteTask(this)">✖</button>`;
+        <button class="delete-btn" onclick="deleteTask(this)" aria-label="Delete task">✖</button>`;
       taskList.appendChild(li);
     }
 
@@ -209,6 +298,7 @@
         createTaskElement(text);
         taskInput.value = "";
         saveTasks();
+        taskInput.focus();
       }
     }
 
