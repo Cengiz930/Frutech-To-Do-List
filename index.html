@@ -2,344 +2,536 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>🍏 Frutech To-Do List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🍓 Frutech To-Do List</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
   <style>
     :root {
-      --bg: #fffaf0;
-      --header: #ffe4e1;
-      --footer: #fffaf0;
-      --container: #ffffffcc;
-      --text: #222;
-      --task-bg: #f0fff0;
-      --border: #32cd32;
-      --btn: #90ee90;
-      --delete: #ff7f7f;
-      --input-bg: #fff;
+      
+      --primary: #FF6B6B;
+      --secondary: #4ECDC4;
+      --background: #FFF9F2;
+      --card: #FFFFFF;
+      --text: #2E2E2E;
+      --text-light: #666666;
+      --border: #FFD6D6;
+      --success: #77DD77;
+      --warning: #FFD166;
+      --danger: #FF8A8A;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      --fruit-icon: '🍓';
     }
 
+    
     body.dark {
-      --bg: #121212;
-      --header: #1e1e1e;
-      --footer: #121212;
-      --container: #1e1e1ecc;
-      --text: #f0f0f0;
-      --task-bg: #2a2a2a;
-      --border: #90ee90;
-      --btn: #32cd32;
-      --delete: #ff4f4f;
-      --input-bg: #2e2e2e;
+      --primary: #FF8E8E;
+      --secondary: #6ADBD3;
+      --background: #1A1A2E;
+      --card: #16213E;
+      --text: #F5F5F5;
+      --text-light: #B8B8B8;
+      --border: #2E3A4E;
+      --success: #88EE88;
+      --warning: #FFDD77;
+      --danger: #FF9E9E;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      --fruit-icon: '🍇';
     }
 
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
     }
 
     body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg);
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background);
       color: var(--text);
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+    }
+
+    .fruit-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.05;
+      z-index: -1;
+      pointer-events: none;
+      background-image: radial-gradient(var(--primary) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
     }
 
     header {
       text-align: center;
-      padding: 30px 20px;
-      background-color: var(--header);
+      margin: 30px 0 40px;
+      position: relative;
     }
 
-    header h1 {
-      font-size: 2.2rem;
-      margin: 0;
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
     }
 
-    header p {
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
       font-size: 1rem;
-      margin-top: 8px;
+      color: var(--text-light);
+      max-width: 80%;
+      margin: 0 auto;
     }
 
-.theme-toggle {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  background-color: var(--btn);
-  color: var(--text);
-  border: none;
-  padding: 6px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  z-index: 1000;
-  user-select: none;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-  transition: background-color 0.3s ease;
-}
-
-.theme-toggle:hover {
-  background-color: #a3e6a3;
-}
-
-    .container {
-      max-width: 600px;
-      margin: 40px auto 60px auto;
-      background: var(--container);
-      border-radius: 20px;
-      padding: 25px 20px 30px 20px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    
-    .input-wrapper {
-      display: flex;
-      gap: 12px;
-      width: 100%;
-    }
-
-    input[type="text"] {
-      flex: 1;
-      padding: 14px 16px;
-      font-size: 1.1rem;
-      border: 2px solid #ccc;
-      border-radius: 14px;
-      background-color: var(--input-bg);
-      color: var(--text);
-      outline-offset: 2px;
-      outline-color: var(--btn);
-      transition: border-color 0.25s ease;
-    }
-
-    input[type="text"]:focus {
-      border-color: var(--btn);
-    }
-
-    button.add-btn {
-      padding: 14px 20px;
-      font-size: 1.1rem;
-      background-color: var(--btn);
+    .theme-toggle {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: var(--card);
       border: none;
-      border-radius: 14px;
-      cursor: pointer;
-      color: var(--text);
-      flex-shrink: 0;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.12);
-      user-select: none;
-      transition: background-color 0.3s ease;
-    }
-
-    button.add-btn:hover {
-      background-color: #7fcc7f;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
       display: flex;
-      flex-direction: column;
-      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      color: var(--text);
+      font-size: 1.2rem;
+    }
+
+    .app-card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      margin-bottom: 30px;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .task-input {
+      flex: 1;
+      padding: 15px 20px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-size: 1rem;
+      background: var(--card);
+      color: var(--text);
+      outline: none;
+    }
+
+    .task-input:focus {
+      border-color: var(--primary);
+    }
+
+    .add-btn {
+      padding: 0 25px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .add-btn:hover {
+      opacity: 0.9;
+    }
+
+    .tasks-container {
       max-height: 400px;
       overflow-y: auto;
+      padding-right: 5px;
     }
 
-    li {
-      background-color: var(--task-bg);
-      padding: 12px 18px;
-      font-size: 1.1rem;
-      border-left: 8px solid var(--border);
-      border-radius: 14px;
+    .task-list {
+      list-style: none;
+    }
+
+    .task-item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      word-break: break-word;
+      padding: 15px;
+      margin-bottom: 12px;
+      background: var(--card);
+      border-radius: 12px;
+      border-left: 5px solid var(--primary);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
     }
 
-    li.completed span {
+    .task-item.completed {
+      opacity: 0.8;
+      border-left-color: var(--success);
+    }
+
+    .task-item.completed .task-text {
       text-decoration: line-through;
-      color: gray;
+      color: var(--text-light);
     }
 
-    li span {
-      flex-grow: 1;
+    .task-checkbox {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      margin-right: 15px;
       cursor: pointer;
-      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .delete-btn {
-      background-color: var(--delete);
-      border: none;
-      padding: 8px 14px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
+    .task-checkbox:checked {
+      background: var(--success);
+      border-color: var(--success);
+    }
+
+    .task-checkbox:checked::after {
+      content: '✓';
       color: white;
-      flex-shrink: 0;
-      user-select: none;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-      transition: background-color 0.25s ease;
+      font-size: 12px;
+    }
+
+    .task-text {
+      flex: 1;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .task-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-light);
+    }
+
+    .task-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
     }
 
     .delete-btn:hover {
-      background-color: #ff5a5a;
+      color: var(--danger);
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: var(--text-light);
     }
 
     footer {
       text-align: center;
-      margin-top: 50px;
-      padding: 20px 15px;
-      background: var(--footer);
+      margin-top: 40px;
+      color: var(--text-light);
       font-size: 0.9rem;
-      user-select: none;
+    }
+
+    .fruit-emoji {
+      font-size: 1.2rem;
+      margin: 0 3px;
     }
 
     
-@media (max-width: 480px) {
-  header h1 {
-    font-size: 1.6rem;
-  }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-  header p {
-    font-size: 0.85rem;
-  }
+    .task-item {
+      animation: fadeIn 0.3s ease-out;
+    }
 
-  .theme-toggle {
-    padding: 6px 10px;
-    font-size: 0.85rem;
-    top: 12px;
-    right: 12px;
-  }
+    
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
 
-  .container {
-    margin: 30px 10px 50px 10px;
-    padding: 16px 14px 22px 14px;
-  }
+    ::-webkit-scrollbar-track {
+      background: var(--border);
+      border-radius: 10px;
+    }
 
-  .input-wrapper {
-    flex-direction: column;
-    gap: 10px;
-  }
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
+    }
 
-  input[type="text"] {
-    width: 100%;
-    padding: 12px 14px;
-    font-size: 1rem;
-  }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 10px;
+      }
 
-  button.add-btn {
-    width: 100%;
-    padding: 12px 14px;
-    font-size: 1rem;
-  }
+      h1 {
+        font-size: 2rem;
+      }
 
-  li {
-    font-size: 1rem;
-    padding: 10px 12px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
+      .app-card {
+        padding: 20px;
+      }
 
-  .delete-btn {
-    align-self: flex-end;
-    padding: 6px 10px;
-    font-size: 0.9rem;
-  }
-}
+      .input-group {
+        flex-direction: column;
+      }
 
-  </style>
-</head>
-<body>
-  <button class="theme-toggle" onclick="toggleTheme()">🌓 Theme</button>
+      .add-btn {
+        padding: 15px;
+        justify-content: center;
+      }
 
-  <header>
-    <h1>🍇 Frutech To-Do List 🍓</h1>
-    <p>Organize your fruity life with style! 🍍✨</p>
-  </header>
-
-  <div class="container">
-    <div class="input-wrapper">
-      <input type="text" id="taskInput" placeholder="Add a new task 🍊" />
-      <button class="add-btn" onclick="addTask()">➕ Add</button>
-    </div>
-    <ul id="taskList" aria-live="polite"></ul>
-  </div>
-
-  <footer>
-    © 2025 Frutech Systems • 🍏 Created by Cengiz Kara and Other Developers. 🍉
-  </footer>
-
-  <script>
-    const taskInput = document.getElementById("taskInput");
-    const taskList = document.getElementById("taskList");
-
-    function loadTasks() {
-      const saved = localStorage.getItem("frutechTasks");
-      const theme = localStorage.getItem("frutechTheme");
-      if (theme === "dark") document.body.classList.add("dark");
-
-      if (saved) {
-        const tasks = JSON.parse(saved);
-        tasks.forEach(task => {
-          createTaskElement(task.text, task.completed);
-        });
+      .tasks-container {
+        max-height: 50vh;
       }
     }
 
-    function saveTasks() {
-      const tasks = [];
-      taskList.querySelectorAll("li").forEach(li => {
-        tasks.push({
-          text: li.querySelector("span").innerText,
-          completed: li.classList.contains("completed")
-        });
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 30px 0;
+      color: var(--text-light);
+    }
+
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="fruit-bg"></div>
+  
+  <div class="container">
+    <header>
+      <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+      <div class="logo">
+        <h1>Frutech</h1>
+      </div>
+      <p class="subtitle">Organize your tasks with fruity freshness! <span class="fruit-emoji">🍓🍌🍊</span></p>
+    </header>
+
+    <main class="app-card">
+      <div class="input-group">
+        <input type="text" class="task-input" id="taskInput" placeholder="Add a new task..." autofocus>
+        <button class="add-btn" onclick="addTask()">
+          <span>Add</span>
+          <span class="fruit-emoji" id="randomFruit">🍎</span>
+        </button>
+      </div>
+
+      <div class="tasks-container">
+        <ul class="task-list" id="taskList">
+          <!-- Tasks will be added here dynamically -->
+        </ul>
+        <div id="emptyState" class="empty-state" style="display: none;">
+          <div class="empty-icon">🍃</div>
+          <p>No tasks yet! Add your first task above.</p>
+        </div>
+      </div>
+
+      <div class="stats">
+        <span id="totalTasks">0 tasks</span>
+        <span id="completedTasks">0 completed</span>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2025 Frutech Systems • 🍉 Created <span class="fruit-emoji"></span> by Cengiz Kara and Other Developers. 🍉 <span class="fruit-emoji"></span></p>
+    </footer>
+  </div>
+
+  <script>
+    
+    const taskInput = document.getElementById('taskInput');
+    const taskList = document.getElementById('taskList');
+    const emptyState = document.getElementById('emptyState');
+    const totalTasksEl = document.getElementById('totalTasks');
+    const completedTasksEl = document.getElementById('completedTasks');
+    const randomFruit = document.getElementById('randomFruit');
+
+    
+    const fruits = ['🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍈', '🍒', '🍑', '🥭', '🍍', '🥝'];
+    
+    
+    function init() {
+      loadTasks();
+      updateStats();
+      setRandomFruit();
+      
+      
+      setInterval(setRandomFruit, 3000);
+      
+      
+      taskInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') addTask();
       });
-      localStorage.setItem("frutechTasks", JSON.stringify(tasks));
     }
 
-    function createTaskElement(text, completed = false) {
-      const li = document.createElement("li");
-      if (completed) li.classList.add("completed");
-      li.innerHTML = `
-        <span onclick="toggleComplete(this)">${text}</span>
-        <button class="delete-btn" onclick="deleteTask(this)" aria-label="Delete task">✖</button>`;
-      taskList.appendChild(li);
+    
+    function setRandomFruit() {
+      const randomIndex = Math.floor(Math.random() * fruits.length);
+      randomFruit.textContent = fruits[randomIndex];
     }
 
+    
     function addTask() {
-      const text = taskInput.value.trim();
-      if (text !== "") {
-        createTaskElement(text);
-        taskInput.value = "";
+      const taskText = taskInput.value.trim();
+      if (taskText) {
+        createTaskElement(taskText);
+        taskInput.value = '';
         saveTasks();
+        updateStats();
         taskInput.focus();
       }
     }
 
+    
+    function createTaskElement(text, completed = false) {
+      const li = document.createElement('li');
+      li.className = 'task-item' + (completed ? ' completed' : '');
+      
+      li.innerHTML = `
+        <input type="checkbox" class="task-checkbox" ${completed ? 'checked' : ''}>
+        <span class="task-text">${text}</span>
+        <div class="task-actions">
+          <button class="task-btn delete-btn" onclick="deleteTask(this)">🗑️</button>
+        </div>
+      `;
+      
+      
+      const checkbox = li.querySelector('.task-checkbox');
+      checkbox.addEventListener('change', function() {
+        li.classList.toggle('completed', this.checked);
+        saveTasks();
+        updateStats();
+      });
+      
+      
+      const taskText = li.querySelector('.task-text');
+      taskText.addEventListener('click', function() {
+        checkbox.checked = !checkbox.checked;
+        li.classList.toggle('completed', checkbox.checked);
+        saveTasks();
+        updateStats();
+      });
+      
+      taskList.appendChild(li);
+      emptyState.style.display = 'none';
+    }
+
+    
     function deleteTask(btn) {
-      btn.parentElement.remove();
-      saveTasks();
+      const li = btn.closest('.task-item');
+      li.classList.add('fade-out');
+      setTimeout(() => {
+        li.remove();
+        saveTasks();
+        updateStats();
+        if (taskList.children.length === 0) {
+          emptyState.style.display = 'block';
+        }
+      }, 300);
     }
 
-    function toggleComplete(span) {
-      span.parentElement.classList.toggle("completed");
-      saveTasks();
+    
+    function saveTasks() {
+      const tasks = [];
+      document.querySelectorAll('.task-item').forEach(task => {
+        tasks.push({
+          text: task.querySelector('.task-text').textContent,
+          completed: task.classList.contains('completed')
+        });
+      });
+      localStorage.setItem('frutechTasks', JSON.stringify(tasks));
     }
 
+    
+    function loadTasks() {
+      const savedTasks = localStorage.getItem('frutechTasks');
+      const savedTheme = localStorage.getItem('frutechTheme');
+      
+      
+      if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+      }
+      
+      if (savedTasks) {
+        const tasks = JSON.parse(savedTasks);
+        if (tasks.length > 0) {
+          tasks.forEach(task => createTaskElement(task.text, task.completed));
+        } else {
+          emptyState.style.display = 'block';
+        }
+      } else {
+        emptyState.style.display = 'block';
+      }
+    }
+
+    
+    function updateStats() {
+      const total = taskList.children.length;
+      const completed = document.querySelectorAll('.task-item.completed').length;
+      
+      totalTasksEl.textContent = `${total} ${total === 1 ? 'task' : 'tasks'}`;
+      completedTasksEl.textContent = `${completed} completed`;
+    }
+
+    
     function toggleTheme() {
-      document.body.classList.toggle("dark");
-      const mode = document.body.classList.contains("dark") ? "dark" : "light";
-      localStorage.setItem("frutechTheme", mode);
+      document.body.classList.toggle('dark');
+      const theme = document.body.classList.contains('dark') ? 'dark' : 'light';
+      localStorage.setItem('frutechTheme', theme);
+      
+      
+      const themeToggle = document.querySelector('.theme-toggle');
+      themeToggle.textContent = theme === 'dark' ? '🌞' : '🌓';
     }
 
-    taskInput.addEventListener("keypress", function(event) {
-      if (event.key === "Enter") addTask();
-    });
-
-    window.onload = loadTasks;
+    
+    document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
